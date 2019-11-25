@@ -8,12 +8,13 @@ rank = comm.Get_rank()
 size = comm.size
 
 def my_cannon(n):
+    init_t = MPI.Wtime()
     A = np.array([[random() for i in range(n)] for j in range(n)])
     B = np.array([[random() for i in range(n)] for j in range(n)])
     C = np.array([[0.0 for i in range(n)] for j in range(n)])
 
-    print(A)
-    print(B)
+    # print(A)
+    # print(B)
     # Skew the matrices
     # First by row
     for i in range(0, n):
@@ -25,8 +26,8 @@ def my_cannon(n):
         B[:, i] = np.roll(B[:,i], -i, axis=0)
 
     # Now do the matrix multiplication
-    print(A)
-    print(B)
+    # print(A)
+    # print(B)
 
     for i in range(0, n):
         A = np.roll(A, -1, axis=0)
@@ -34,7 +35,10 @@ def my_cannon(n):
 
         C = np.add(C, np.matmul(A, B))
 
-    print(C)
+    # print(C)
+    finit_t = MPI.Wtime()
+    print("Cannon run time:")
+    print(finit_t - init_t)
 
 
 my_cannon(4)

@@ -8,8 +8,9 @@ rank = comm.Get_rank()
 size = comm.size
 
 def my_strassen(n):
+    init_t = MPI.Wtime()
     size = int(pow(2, n))
-    print(size)
+    # print(size)
 
     A = np.array([[random() for i in range(size)] for j in range(size)])
     B = np.array([[random() for i in range(size)] for j in range(size)])
@@ -51,13 +52,17 @@ def my_strassen(n):
     C_21 = np.add(P_3, P_4)
     C_22 = np.subtract(np.subtract(np.add(P_5, P_1), P_3), P_7)
 
-    print(C_11)
-    print(C_12)
-    print(C_21)
+    # print(C_11)
+    # print(C_12)
+    # print(C_21)
     C1 = np.concatenate((C_11, C_12), axis=1)
     C2 = np.concatenate((C_21, C_22), axis=1)
     C = np.concatenate((C1, C2), axis=0)
 
-    print(C)
+    # print(C)
+    finit_t = MPI.Wtime()
+    print("Strassen run time:")
+    print(finit_t - init_t)
+
 
 my_strassen(2)
