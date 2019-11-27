@@ -1,6 +1,7 @@
 from mpi4py import MPI
 from random import random
 import numpy as np
+import sys
 
 comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
@@ -40,5 +41,5 @@ def my_cannon(n):
     print("Cannon run time:")
     print(finit_t - init_t)
 
-
-my_cannon(4)
+x = int(sys.argv[1])
+my_cannon(x)

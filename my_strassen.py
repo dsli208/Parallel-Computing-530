@@ -1,6 +1,7 @@
 from mpi4py import MPI
 from random import random
 import numpy as np
+import sys
 
 comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
@@ -9,24 +10,26 @@ size = comm.size
 
 def my_strassen(n):
     init_t = MPI.Wtime()
-    size = int(pow(2, n))
+    size_n = int(pow(2, n))
     # print(size)
 
-    A = np.array([[random() for i in range(size)] for j in range(size)])
-    B = np.array([[random() for i in range(size)] for j in range(size)])
+    A = np.array([[random() for i in range(n)] for j in range(n)])
+    B = np.array([[random() for i in range(n)] for j in range(n)])
 
     # Split submatrices
     half_index = int(n / 2)
 
-    A_11 = A[0:half_index+1, 0:half_index+1]
-    A_12 = A[half_index+1:, 0:half_index+1]
-    A_21 = A[0:half_index+1, half_index+1:]
-    A_22 = A[half_index+1:, half_index+1:]
+    A_11 = A[0:half_index, 0:half_index]
+    A_12 = A[half_index:, 0:half_index]
+    A_21 = A[0:half_index, half_index:]
+    A_22 = A[half_index:, half_index:]
 
-    B_11 = B[0:half_index+1, 0:half_index+1]
-    B_12 = B[half_index+1:, 0:half_index+1]
-    B_21 = B[0:half_index+1, half_index+1:]
-    B_22 = B[half_index+1:, half_index+1:]
+    B_11 = B[0:half_index, 0:half_index]
+    B_12 = B[half_index:, 0:half_index]
+    B_21 = B[0:half_index, half_index:]
+    B_22 = B[half_index:, half_index:]
+
+    # import pdb; pdb.set_trace()
 
     S_1 = np.subtract(B_12, B_22)
     S_2 = np.add(A_11, A_12)
@@ -64,5 +67,5 @@ def my_strassen(n):
     print("Strassen run time:")
     print(finit_t - init_t)
 
-
-my_strassen(2)
+x = int(sys.argv[1])
+my_strassen(x)
